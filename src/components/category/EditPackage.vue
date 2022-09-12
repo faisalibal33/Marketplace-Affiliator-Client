@@ -2,16 +2,16 @@
   <div class="containerCategory">
     <div class="addCategory">
       <div class="titleCategory">
-        <h3>Add Category</h3>
+        <h3>Edit Product</h3>
       </div>
       <div class="formWrapper">
-        <form class="formWrapper">
+        <form class="formWrapper" v-if="product">
           <div class="formInput">
             <input
               type="text"
               class="f-input"
               placeholder="Package Name"
-              v-model="packageName"
+              v-model="product.packageName"
             />
           </div>
           <div class="formInput">
@@ -19,7 +19,7 @@
               type="text"
               class="f-textArea"
               placeholder="Package Description"
-              v-model="desc"
+              v-model="product.desc"
             />
           </div>
           <div class="formInput">
@@ -27,11 +27,11 @@
               type="text"
               class="f-input"
               placeholder="Image Url"
-              v-model="images"
+              v-model="product.images"
             />
           </div>
           <div class="formInput">
-            <select class="f-input" v-model="category">
+            <select class="f-input" v-model="product.category">
               <option
                 v-for="category in categories"
                 :key="category.id"
@@ -46,7 +46,7 @@
               type="number"
               class="f-input"
               placeholder="Price"
-              v-model="price"
+              v-model="product.price"
             />
           </div>
           <div class="formInput">
@@ -54,21 +54,15 @@
               type="text"
               class="f-input"
               placeholder="Url package"
-              v-model="url"
+              v-model="product.url"
             />
           </div>
           <div class="buttonWrapper">
-            <button type="submit" class="button-c" @click="addCategory">
+            <button type="submit" class="button-c" @click="editCategory">
               Submit
             </button>
           </div>
         </form>
-      </div>
-    </div>
-    <div class="addSuccess">
-      <div v-if="addProduct === false">Add your new product NOW!!!!</div>
-      <div v-if="addProduct === true">
-        <CategoryBox :product="products[products.length - 1]" />
       </div>
     </div>
   </div>
@@ -77,20 +71,14 @@
 <script>
 import sweetalert from "sweetalert";
 import axios from "axios";
-import CategoryBox from "../../components/category/CategoryBox.vue";
 
 export default {
-  props: ["products"],
-  components: { CategoryBox },
+  props: ["baseURL", "products"],
+
   data() {
     return {
-      addProduct: false,
-      packageName: "",
-      category: "",
-      desc: "",
-      images: "",
-      price: null,
-      url: "",
+      product: null,
+      id: null,
       categories: [
         "style",
         "dekorasi",
@@ -102,24 +90,14 @@ export default {
     };
   },
   methods: {
-    addCategory(e) {
+    editCategory(e) {
       e.preventDefault();
-
-      const newCategory = {
-        packageName: this.packageName,
-        category: this.category,
-        desc: this.desc,
-        images: this.images,
-        price: this.price,
-        url: this.url,
-      };
-
-      const urlBase = "http://localhost:8800/api/package";
+      console.log(this.product);
       axios
-        .post(`${urlBase}`, newCategory)
+        .put(`${this.baseURL}/${this.product._id}`, this.product)
         .then(() => {
           sweetalert({
-            text: "Package Added Succesfully",
+            text: "Product has been updated succesfully",
             icon: "success",
           });
           this.addProduct = true;
@@ -129,12 +107,10 @@ export default {
           console.log(err);
         });
     },
-    tesaja() {
-      console.log(this.products[this.products.length - 1]);
-    },
   },
   mounted() {
-    this.tesaja();
+    this.id = this.$route.params.id;
+    this.product = this.products.find((product) => product._id == this.id);
   },
 };
 </script>

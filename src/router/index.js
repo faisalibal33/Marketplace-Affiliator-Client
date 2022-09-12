@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import addPackage from "../components/category/addPackage.vue";
+import EditPackage from "../components/category/EditPackage.vue";
 import Category from "../components/category/Category.vue";
 
 const router = createRouter({
@@ -12,17 +13,14 @@ const router = createRouter({
       component: () => import("../views/HomeView.vue"),
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
-    },
-    {
       path: "/addCategory",
       name: "addCategory",
       component: addPackage,
+    },
+    {
+      path: "/editCategory/:id",
+      name: "EditCategory",
+      component: EditPackage,
     },
     {
       path: "/Category",

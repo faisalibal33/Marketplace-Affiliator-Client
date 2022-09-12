@@ -5,18 +5,31 @@
         <router-link to="/" class="route">
           <li>Home</li>
         </router-link>
-        <router-link to="/addCategory" class="route">
-          <li>Category</li>
+        <router-link to="/Category" class="route">
+          <li>Product</li>
         </router-link>
-        <router-link to="/login" class="route">
-          <li>Admin</li>
+        <router-link to="/addCategory" class="route">
+          <li>Add Product</li>
         </router-link>
       </ul>
       <div class="searchWrapper">
         <div>
           <input type="text" class="inputSearch" />
         </div>
-        <button class="buttonSearch">Search</button>
+        <button class="buttonSearch">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-search"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -67,7 +80,6 @@ export default {};
 
 .searchWrapper {
   display: flex;
-  gap: 10px;
 }
 
 .inputSearch {
@@ -76,6 +88,8 @@ export default {};
   border: none;
   cursor: pointer;
   padding: 2px 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .inputSearch:hover {
@@ -87,6 +101,8 @@ export default {};
   border: none;
   background-color: white;
   border-radius: 4px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
   color: rgba(106, 187, 0, 0.808);
 }
 
