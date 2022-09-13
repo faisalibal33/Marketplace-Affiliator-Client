@@ -122,6 +122,7 @@ export default {
             text: "Package Added Succesfully",
             icon: "success",
           });
+          this.$emit("fetchData");
           this.addProduct = true;
         })
         .catch((err) => {
@@ -129,12 +130,6 @@ export default {
           console.log(err);
         });
     },
-    tesaja() {
-      console.log(this.products[this.products.length - 1]);
-    },
-  },
-  mounted() {
-    this.tesaja();
   },
 };
 </script>

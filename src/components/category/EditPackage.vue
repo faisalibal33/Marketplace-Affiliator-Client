@@ -96,6 +96,7 @@ export default {
       axios
         .put(`${this.baseURL}/${this.product._id}`, this.product)
         .then(() => {
+          this.$emit("fetchData");
           sweetalert({
             text: "Product has been updated succesfully",
             icon: "success",

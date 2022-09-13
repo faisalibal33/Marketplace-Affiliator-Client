@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import addPackage from "../components/category/addPackage.vue";
 import EditPackage from "../components/category/EditPackage.vue";
 import Category from "../components/category/Category.vue";

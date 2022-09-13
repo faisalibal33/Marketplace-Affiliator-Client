@@ -5,7 +5,7 @@ import Navbar from "./components/navbar/Navbar.vue";
 
 <template>
   <Navbar />
-  <RouterView :products="products" :baseURL="baseURL" />
+  <RouterView :products="products" :baseURL="baseURL" @fetchData="fetchData" />
 </template>
 
 <script>
