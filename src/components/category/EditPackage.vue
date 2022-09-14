@@ -65,16 +65,19 @@
         </form>
       </div>
     </div>
+    <div v-if="product">
+      <CategoryBox :product="product" />
+    </div>
   </div>
 </template>
 
 <script>
 import sweetalert from "sweetalert";
 import axios from "axios";
-
+import CategoryBox from "../../components/category/CategoryBox.vue";
 export default {
   props: ["baseURL", "products"],
-
+  components: { CategoryBox },
   data() {
     return {
       product: null,

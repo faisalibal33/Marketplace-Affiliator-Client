@@ -1,8 +1,11 @@
 <template>
+  <div class="modalBackground" v-if="modal === true">
+    <div class="modalContainer">tes</div>
+  </div>
   <div class="categoryCard">
     <div class="cardImg">
       <img :src="product.images" alt="Category image" />
-      <div class="editDelete">
+      <div class="editDelete" v-if="menuED === true">
         <router-link
           :to="{ name: 'EditCategory', params: { id: product._id } }"
           class="router-link"
@@ -27,7 +30,7 @@
             </svg>
           </div>
         </router-link>
-        <div class="editDel">
+        <div class="editDel" @click="deleteCategory">
           <p>Delete</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,38 +50,73 @@
           </svg>
         </div>
       </div>
+      <div @click="menuEdit">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="25"
+          height="25"
+          fill="currentColor"
+          class="bi bi-three-dots-vertical dotsPos"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div class="boxisi">
+      <div class="namedesc">
+        <div class="categoryName">
+          <h4>{{ product.packageName }}</h4>
+        </div>
+        <div class="categoryDesc">
+          <p>{{ product.desc.substring(0, 100) }}...</p>
+        </div>
+      </div>
 
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="25"
-        height="25"
-        fill="currentColor"
-        class="bi bi-three-dots-vertical dotsPos"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
-        />
-      </svg>
-    </div>
-    <div class="categoryName">
-      <h4>{{ product.packageName }}</h4>
-    </div>
-    <div class="categoryDesc">
-      <p>{{ product.desc.substring(0, 65) }}...</p>
-    </div>
-    <div class="button-c-box">
-      <p class="price">Rp. {{ product.price }}</p>
-      <button class="buttonChart">add to chart</button>
+      <div class="button-c-box">
+        <p class="price">Rp. {{ product.price }}</p>
+        <button class="buttonChart" @click="modalOpen">add to chart</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import sweetalert from "sweetalert";
+import axios from "axios";
 export default {
   name: "CategoryBox",
-  props: ["product"],
-  methods: {},
+  props: ["product", "baseURL"],
+  data() {
+    return {
+      modal: false,
+      menuED: false,
+    };
+  },
+  methods: {
+    modalOpen() {
+      this.modal = true;
+    },
+    menuEdit() {
+      this.menuED = !this.menuED;
+    },
+    async deleteCategory() {
+      await axios
+        .delete(`http://localhost:8800/api/package/${this.product._id}`)
+        .then(() => {
+          sweetalert({
+            text: "Product has been deleted succesfully",
+            icon: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("ada yang salah");
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
 
@@ -120,6 +158,7 @@ export default {
   align-items: center;
   width: 100%;
   padding: 0px 10px;
+  cursor: pointer;
 }
 
 .editDel:hover {
@@ -143,6 +182,11 @@ export default {
   color: rgba(106, 187, 0, 0.808);
 }
 
+.namedesc {
+  display: flex;
+  flex-direction: column;
+}
+
 .cardImg img {
   width: 100%;
   height: 100%;
@@ -155,16 +199,44 @@ export default {
 
 .categoryName {
   padding: 0px 10px;
+  margin-top: 5px;
+}
+.categoryName h4 {
+  font-size: 20px;
+  margin-bottom: 0rem;
 }
 
 .categoryDesc {
   padding: 0px 10px;
 }
 
+.categoryDesc p {
+  font-size: 12px;
+  margin-bottom: 0rem;
+}
+
+.button-c-box {
+  align-items: flex-end;
+  padding: 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 0rem;
+}
+
+.boxisi {
+  height: 47%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .buttonChart {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
   padding: 7px 10px;
   border: none;
   color: white;
@@ -177,5 +249,30 @@ export default {
 .buttonChart:hover {
   color: rgba(106, 187, 0, 0.808);
   background: white;
+}
+
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(200, 200, 200) transparent;
+  backdrop-filter: blur(5px);
+  position: fixed;
+  z-index: 3000;
+}
+
+.modalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 300px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  align-items: center;
 }
 </style>
